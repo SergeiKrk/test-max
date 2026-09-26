@@ -1,0 +1,48 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test -- --run
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SPRINTHOST_SSH_KEY }}
+      - name: Trust Sprinthost host key
+        run: ssh-keyscan -H "${{ secrets.SPRINTHOST_HOST }}" >> "$HOME/.ssh/known_hosts"
+      - name: Upload production files
+        run: |
+          scp -r dist/. "${{ secrets.SPRINTHOST_USER }}@${{ secrets.SPRINTHOST_HOST }}:${{ secrets.SPRINTHOST_PATH }}/"
+          ssh "${{ secrets.SPRINTHOST_USER }}@${{ secrets.SPRINTHOST_HOST }}" "mkdir -p '${{ secrets.SPRINTHOST_PATH }}/tmp' && touch '${{ secrets.SPRINTHOST_PATH }}/tmp/restart.txt'"
