@@ -41,8 +41,10 @@
 .conversation { display: flex; min-width: 0; min-height: 0; flex-direction: column; background: #92c9f5 url('/bg-max.jpg') center / cover no-repeat; }
 .conversationHeader { display: flex; min-height: 64px; flex: 0 0 64px; align-items: center; gap: 10px; padding: 0 var(--space-5); background: #fff; border-bottom: 1px solid var(--color-line); }
 .conversationAvatar { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; color: #fff; background: linear-gradient(140deg, #29b7d5, #4b63db); border-radius: 50%; }
-.conversationHeader strong { min-width: 0; overflow: hidden; flex: 1; font-size: 15px; font-weight: 600; overflow-wrap: anywhere; text-overflow: ellipsis; white-space: nowrap; }
-.conversationHeader > span:last-child { color: var(--color-muted); font-size: 12px; }
+.conversationIdentity { display: grid; min-width: 0; flex: 1; gap: 2px; overflow: hidden; }
+.conversationIdentity strong, .conversationIdentity small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conversationIdentity strong { font-size: 15px; font-weight: 600; }
+.conversationIdentity small { color: var(--color-muted); font-size: 12px; }
 .mobileBack { display: none; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; color: #536179; background: transparent; border: 0; border-radius: 5px; cursor: pointer; }
 .messageRegion { position: relative; min-height: 0; flex: 1; overflow: hidden; background: transparent; }
 .messageList { display: flex; width: min(100%, 720px); height: 100%; min-height: 0; flex-direction: column; gap: 10px; overflow-y: auto; margin: 0 auto; padding: 20px 0; list-style: none; overscroll-behavior: contain; scroll-behavior: smooth; }
@@ -53,7 +55,7 @@
 .outgoing { align-self: flex-end; align-items: flex-end; }
 .messageMeta { display: flex; min-height: 12px; justify-content: flex-end; color: #858b91; font-size: 10px; line-height: 1.2; }
 .messageMeta time { white-space: nowrap; }
-.messageStatus { display: flex; max-width: 100%; align-items: center; justify-content: flex-end; gap: 4px; padding: 2px 5px; color: #66727b; background: rgb(255 255 255 / 92%); border: 1px solid #dceaf4; border-radius: 999px; font-size: 10px; line-height: 1.2; text-align: right; }
+.messageStatus { display: flex; max-width: 100%; min-height: 14px; align-items: center; justify-content: flex-end; gap: 4px; padding: 0 4px; color: #526778; font-size: 10px; line-height: 1.2; text-align: right; }
 .messageStatus span { overflow-wrap: anywhere; }
 .messageStatus button { display: grid; width: 24px; height: 24px; flex: 0 0 auto; place-items: center; color: #526078; background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
 .messageStatus button:hover { background: #edf6ff; }

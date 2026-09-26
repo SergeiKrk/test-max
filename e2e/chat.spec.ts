@@ -37,6 +37,7 @@ test('connects, sends text, receives and acknowledges a reply', async ({ page })
         expect(request.postDataJSON()).toMatchObject({ chatId });
         sentTexts.push(request.postDataJSON().message as string);
         sends += 1;
+        await new Promise((resolve) => setTimeout(resolve, 120));
         await fulfill({ idMessage: `sent-${sends}` });
         messageSent = true;
         break;
@@ -78,10 +79,24 @@ test('connects, sends text, receives and acknowledges a reply', async ({ page })
   await page.getByLabel('idInstance').fill(idInstance);
   await page.getByLabel('apiTokenInstance').fill(token);
   await page.getByRole('button', { name: 'Подключиться' }).click();
-  await page.getByLabel('Номер телефона').fill('+7 999 123-45-67');
+  const phoneInput = page.getByLabel('Номер телефона');
+  await phoneInput.focus();
+  await expect(phoneInput).toHaveCSS('outline-style', 'solid');
+  await phoneInput.fill('+7 999 123-45-67');
   await page.getByRole('button', { name: 'Создать чат' }).click();
-  await page.getByLabel('Сообщение').fill('Проверка отправки');
-  await page.getByRole('button', { name: 'Отправить' }).click();
+  const selectedChat = page.getByRole('button', { name: /Контакт/ });
+  await selectedChat.hover();
+  await expect(selectedChat).toHaveCSS('background-color', 'rgb(231, 242, 252)');
+  const composer = page.getByLabel('Сообщение');
+  const sendButton = page.getByRole('button', { name: 'Отправить' });
+  await expect(sendButton).toBeDisabled();
+  await expect(sendButton).toHaveAttribute('data-sending', 'false');
+  await composer.focus();
+  await expect(composer.locator('xpath=ancestor::form')).toHaveCSS('border-color', 'rgb(166, 205, 234)');
+  await composer.fill('Проверка отправки');
+  await sendButton.click();
+  await expect(sendButton).toBeDisabled();
+  await expect(sendButton).toHaveAttribute('data-sending', 'true');
   await expect(page.getByText('Принято API')).toBeVisible();
   await expect(page.getByText('Доставлено')).toHaveCount(0);
   await expect.poll(() => deletes).toBe(1);
@@ -92,11 +107,13 @@ test('connects, sends text, receives and acknowledges a reply', async ({ page })
   await expect(page.getByRole('button', { name: 'Повторить отправку' })).toHaveCount(0);
   await expect(page.locator('body')).not.toContainText(token);
 
-  await page.getByLabel('Сообщение').fill(longText);
-  await page.getByRole('button', { name: 'Отправить' }).click();
+  await composer.fill(longText);
+  await sendButton.click();
   const longOutgoing = page.getByRole('listitem').filter({ hasText: longText });
   await expect(longOutgoing).toBeVisible();
   await expect(longOutgoing.getByText('Вторая строка сообщения')).toBeVisible();
+  await expect(page.getByText('Принято API')).toHaveCount(2);
+  await expect(composer).toHaveValue('');
   expect(sentTexts).toEqual(['Проверка отправки', longText]);
 
   const desktopLayout = await page.locator('section[aria-label="Чат GREEN-API"]').evaluate((element) => {

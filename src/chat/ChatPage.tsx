@@ -181,7 +181,10 @@ function ChatPageSession({ session, onDisconnect }: Props) {
                 <ArrowLeft size={20} />
               </button>
               <span className={styles.conversationAvatar} aria-hidden="true"><MessageSquareText size={18} /></span>
-              <strong>{activeChat.title}</strong><span>MAX</span>
+              <span className={styles.conversationIdentity}>
+                <strong>{activeChat.title}</strong>
+                <small>MAX</small>
+              </span>
             </header>
             <MessageList key={activeChat.id} messages={state.messages[activeChat.id] ?? []} onRetry={retryMessage} />
             <MessageComposer

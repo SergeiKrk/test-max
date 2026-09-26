@@ -1,0 +1,36 @@
+.scene { width: 100%; min-height: 100dvh; background: #f5f8fc; overflow: clip; }
+.composition { position: relative; display: grid; align-items: center; width: min(100%, 1440px); min-height: max(700px, 100dvh); margin: auto; padding: 80px 24px; }
+.formSlot { z-index: 1; width: min(100%, 464px); min-height: 400px; margin: auto; padding: 32px; background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(205, 217, 230, 0.85); border-radius: 8px; box-shadow: 0 16px 48px rgba(41, 59, 80, 0.08), inset 0 1px 0 #fff; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.brand { margin-bottom: 26px; color: #338052; font-size: 12px; font-weight: 750; letter-spacing: 0; }
+.brand span { margin-left: 8px; color: #7a8794; font-weight: 500; }
+.decoration { position: absolute; pointer-events: none; user-select: none; }
+.decoration img { display: block; width: 100%; height: auto; }
+.sticker { padding: 17px 20px; border: 1px solid #e5ebf1; border-radius: 18px 18px 18px 5px; background: white; color: #394957; font-size: 16px; line-height: 1.5; box-shadow: 0 8px 24px #293b5010; }
+.minimal { width: 235px; right: calc(50% + 280px); top: 21%; transform: rotate(-6deg); }
+.parallax { width: 220px; right: calc(50% + 255px); top: 36%; transform: rotate(4deg); }
+.parallax .sticker { background: #e4f1ff; border-color: #d9e9fa; }
+.call { width: 210px; left: calc(50% + 275px); top: 43%; transform: rotate(5deg); }
+.voice { width: 245px; left: calc(50% + 265px); top: 55%; transform: rotate(-4deg); }
+.voice .sticker { background: #e4f1ff; border-color: #d9e9fa; border-radius: 18px 18px 5px 18px; }
+.plane { width: 220px; right: calc(50% + 300px); top: 65%; }
+.connector { width: 174px; left: calc(50% + 300px); top: 12%; transform: rotate(-12deg); }
+.bubble { width: 150px; left: calc(50% + 295px); top: 77%; transform: rotate(8deg); }
+@media (min-width: 1100px) and (max-width: 1199px) {
+  .minimal { right: calc(50% + 265px); width: 210px; }
+  .parallax { right: calc(50% + 265px); width: 205px; }
+  .call, .voice { left: calc(50% + 265px); width: 215px; }
+  .sticker { padding: 14px 16px; font-size: 15px; }
+}
+@media (min-width: 768px) and (max-width: 1099px) {
+  .minimal, .parallax, .call, .voice { display: none; }
+  .plane { width: 140px; right: auto; left: 4%; top: 76%; }
+  .connector { width: 105px; left: auto; right: 5%; top: 9%; }
+  .bubble { width: 96px; left: auto; right: 5%; top: 78%; }
+}
+@media (max-width: 767px) {
+  .composition { min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; gap: 32px; padding: 36px 24px; }
+  .decoration { display: none; }
+  .plane { display: block; position: static; width: 96px; flex: none; }
+  .formSlot { margin: 0 auto; min-height: 400px; padding: 24px 20px; }
+  .brand { margin-bottom: 20px; }
+}

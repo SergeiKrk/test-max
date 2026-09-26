@@ -79,11 +79,13 @@ export function ConnectionForm({ connectionState, error, onConnect }: Props) {
         </span>
       </label>
 
-      {error && <p className={styles.error} id="connection-error" role="alert">{error}</p>}
       <button className={styles.submit} type="submit" disabled={connecting}>
         {connecting && <LoaderCircle size={18} className={styles.spin} aria-hidden="true" />}
         {connecting ? 'Подключение...' : 'Подключиться'}
       </button>
+      <div className={styles.feedback}>
+        {error && <p className={styles.error} id="connection-error" role="alert">{error}</p>}
+      </div>
     </form>
   );
 }
